@@ -56,7 +56,7 @@ Safe Trip é um aplicativo de celular projetado para detectar sonolência ao vol
 - Comece a dirigir e o aplicativo começará a monitorar o seu rosto.
 - Se sinais de sonolência forem detectados, um alerta será emitido.
 
-
+- Dataset: [Kaggle](https://www.kaggle.com/datasets/dheerajperumandla/drowsiness-dataset)
 
 
 ### Nota: 
