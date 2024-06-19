@@ -1,23 +1,24 @@
-from typing import Union
 from fastapi import APIRouter, FastAPI
-from pydantic import BaseModel
+from fastapi import FastAPI, WebSocket
 from contextlib import asynccontextmanager
 import base64
-import requests
+import cv2
+import numpy as np
+import json
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-class Itens(BaseModel):
-    name: str
-    description: str | None = None
+from eye_detection import EyeDetection
 
-def fake_answer_to_everything_ml_model(x: float):
-    return x * 42
 
 ml_models = {}
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Load the ML model
-    ml_models["answer_to_everything"] = fake_answer_to_everything_ml_model
+    # Loading eye detection object
+    ml_models["eye_detection"] = EyeDetection()
+    
     yield
     # Clean up the ML models and release the resources
     ml_models.clear()
@@ -25,45 +26,31 @@ async def lifespan(app: FastAPI):
 app = FastAPI(lifespan=lifespan)
 router = APIRouter()
 
-class Item(BaseModel):
-    name: str
-    price: float
-    is_offer: Union[bool, None] = None
-
-
-@app.get("/")
-def read_root():
-    return {"Hello": "World"}
-
-
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: Union[str, None] = None):
-    return {"item_id": item_id, "q": q}
-
-@app.put("/items/{item_id}")
-def update_item(item_id: int, item: Item):
-    return {"item_name": item.name, "item_id": item_id}
-
-@router.post("/items/")
-def create_item(item: Item):
-    return {"message": "Item created"}
-
-@router.delete("/items/{item_id}")
-def delete_item(item_id: str):
-    return {"message": "Item deleted"}
-
-@router.patch("/items/")
-def update_item(item: Item):
-    return {"message": "Item updated in place"}
-
-@app.get("/predict")
-async def predict(x: float):
-    result = ml_models["answer_to_everything"](x)
-    return {"result": result}
-
-
-
-
-
+@app.websocket("/ws")
+async def websocket_endpoint(websocket: WebSocket):
+    await websocket.accept()
+    count = 0
+    while True:
+        data = await websocket.receive_text()
+        # Field name to send the image: image
+        image_data = json.loads(data)['image']
+        image = base64.b64decode(image_data.split(',')[1])
+        # Converting to numpy array and loading into an opencv frame
+        np_img = np.frombuffer(image, dtype=np.uint8)
+        frame = cv2.imdecode(np_img, cv2.IMREAD_COLOR)
+        # Predicting if the eyes are open or closed
+        prediction = ml_models["eye_detection"].predict(frame)
+        
+        if prediction is not None:
+           count += 1
+           if count > 4:
+            await websocket.send_json({"status": prediction})
+            count = 0
+        else:
+            await websocket.send_json({"status": "indisponivel"})
 
 app.include_router(router)
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)
