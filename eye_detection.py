@@ -23,7 +23,7 @@ output_left = None
 detector = dlib.get_frontal_face_detector()
 # IMPORTANT
 # Inside of the shape_predictor function , we must define the predictor
-predictor = dlib.shape_predictor("./shape_predictor_68_face_landmarks.dat")
+predictor = dlib.shape_predictor("./saved_model/shape_predictor_68_face_landmarks.dat")
 
 # Input format of the model.
 input_transform = transforms.Compose([
@@ -33,11 +33,21 @@ input_transform = transforms.Compose([
 
 # To load the parameters of the trained model, first we need to initialize same model that we have created into the running application.
 model = DrowsinessCNN()
-device = torch.device('cuda:0' if torch.cuda.is_available(False) else 'cpu')
-device_string = 'cuda:0' if torch.cuda.is_available(False) else 'cpu'
 
-# Loading the parameters of the model - WEIGHTS, BIASES and more.
-model.load_state_dict(torch.load('./saved_model/drowsiness.pth'))
+# Checking if the GPU is available. (if is not, we need to map the model to load on the CPU instead)
+if torch.cuda.is_available():
+    device = torch.device('cuda:0')
+    device_string = 'cuda:0'
+    
+    # Loading the parameters of the model - WEIGHTS, BIASES and more.
+    model.load_state_dict(torch.load('./saved_model/drowsiness.pth'))
+else:
+    device = torch.device('cpu')
+    device_string = 'cpu'
+
+    # Loading the parameters of the model - WEIGHTS, BIASES and more.
+    model.load_state_dict(torch.load('./saved_model/drowsiness.pth', map_location=torch.device('cpu')))
+
 model.eval()
 
 # Input data for the prediction
