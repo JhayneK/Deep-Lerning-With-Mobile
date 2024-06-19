@@ -17,7 +17,7 @@ function App() {
     wsRef.current.onclose = () => {
       console.log('Disconnected from server');
     };
-
+    // Recebe mensagens do WebSocket
     wsRef.current.onmessage = (event) => {
       const data = JSON.parse(event.data);
       switch (data.status){
@@ -31,15 +31,6 @@ function App() {
           break;
         default:
           break;
-      }
-      if(data.processed_image){
-        setImage(data.processed_image)
-      }
-      if(data.eyes_array){
-        console.log(data.eyes_array)
-      }
-      if(data.frame){
-        setVideo(data.frame)
       }
     };
 
@@ -74,7 +65,7 @@ function App() {
       }
     };
   }, []);
-
+  // Função para enviar imagem ao servidor
   const sendImage = (imageData: string) => {
     if (wsRef.current) {
       wsRef.current.send(JSON.stringify({ image: imageData }));
