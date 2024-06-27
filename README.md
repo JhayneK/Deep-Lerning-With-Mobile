@@ -8,11 +8,10 @@
 
 ### Contribuintes:
 - Jhayne Henemam - [perfil](https://github.com/JhayneK)
-- Adriano Reus - [perfil](https://github.com/JhayneK)
-- Guilherme Dalmolin - [perfil](https://github.com/JhayneK)
-- Jorge Antônio - [perfil](https://github.com/JhayneK)
-- Yuri Damin - [perfil](https://github.com/JhayneK)
-- João Darabas - [perfil](https://github.com/JhayneK)
+- Adriano Reus - [perfil](https://github.com/AdrianoReusSavi)
+- Guilherme Dalmolin - [perfil](https://github.com/GuiDalmolin)
+- Jorge Antônio - [perfil](https://github.com/JorgeAntonioJr)
+- João Darabas - [perfil](https://github.com/jpdarabas)
 
 ## 🚀 Tecnologias
 
