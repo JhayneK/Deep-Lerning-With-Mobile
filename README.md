@@ -19,8 +19,7 @@
 Esse projeto foi desenvolvido com as seguintes tecnologias e ferramentas:
 
 Aplicativo:
-- React Native: Framework para desenvolvimento de aplicativos móveis multiplataforma.
-- React Navigation: Para navegação dentro do aplicativo.
+Kotlin: é uma linguagem de programação multiplataforma, orientada a objetos e funcional, concisa e estaticamente tipada.
 
 Inteligência Artificial:
 - Python: Linguagem de programação utilizada para a lógica de IA.
@@ -40,13 +39,13 @@ Safe Trip é um aplicativo de celular projetado para detectar sonolência ao vol
 - Reconhecimento de Sonolência: Identifica sinais de sonolência, como olhos fechados ou piscadas frequentes.
 - Alertas: Emite alertas sonoros ou visuais quando a sonolência é detectada.
 - Histórico de Detecções: Armazena os dados de detecção de sonolência para análises futuras.
-- Interface Amigável: Interface de usuário intuitiva e fácil de usar, desenvolvida com React Native.
+- Interface Amigável: Interface de usuário intuitiva e fácil de usar, desenvolvida com Kotlin e Android SDK 34.
 
 #### Instalação
-- Node.js
-- Python 3.x
+- Python 3.10.6
 - Pip
-- React Native CLI
+- Android SDK 34
+- Java
 - Android Studio ou Xcode para emulação
 
 
